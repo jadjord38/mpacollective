@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architectural Concrete Wānaka &amp; Central Otago | MPA Collective</title>
+<meta name="description" content="Bespoke architectural concrete in Wānaka and Central Otago — fire pits, benchtops, furniture, retaining walls and outdoor features. Raw, unique, built to last.">
+<!-- Fonts: Space Grotesk for technical feel, Inter for clean body -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Iconify -->
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<!-- GSAP / Lenis -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+<style>
+/* --- CORE VARIABLES --- */
+:root {
+--c-bg: #F5F5F5; /* Light Concrete */
+--c-text: #171717;
+--c-accent: #334155; /* Slate */
+--font-display: 'Space Grotesk', sans-serif;
+--font-body: 'Inter', sans-serif;
+}
+body {
+background-color: var(--c-bg);
+color: var(--c-text);
+font-family: var(--font-body);
+margin: 0;
+overflow-x: hidden;
+opacity: 0; /* JS fade in */
+-webkit-font-smoothing: antialiased;
+}
+/* --- LAYOUT UTILS --- */
+.wrapper {
+position: relative;
+z-index: 10;
+background-color: var(--c-bg);
+margin-bottom: 100vh; /* Reveal Footer */
+box-shadow: 0 50px 100px rgba(0,0,0,0.2);
+}
+/* --- TEXT REVEAL UTILS --- */
+.word-wrap {
+display: inline-block;
+overflow: hidden;
+vertical-align: top;
+padding-bottom: 0.1em;
+}
+.word-inner {
+display: inline-block;
+transform: translateY(110%);
+}
+/* --- PRELOADER --- */
+.loader {
+position: fixed;
+inset: 0;
+background: #171717;
+z-index: 10000;
+display: flex;
+justify-content: center;
+align-items: center;
+color: #fff;
+}
+.loader-text {
+font-family: var(--font-display);
+font-size: 3vw;
+letter-spacing: -0.05em;
+font-weight: 500;
+}
+.loader-bar {
+position: absolute;
+bottom: 0;
+left: 0;
+height: 2px;
+background: #fff;
+width: 0%;
+}
+/* --- CARD STACK SECTION --- */
+.stack-section {
+padding: 10vh 0;
+background: #111;
+color: #F5F5F5;
+position: relative;
+}
+.stack-container {
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+position: relative;
+padding-bottom: 10vh;
+}
+.card-item {
+position: sticky;
+top: 10vh;
+height: 80vh;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 5vh;
+}
+.card-inner {
+width: 90%;
+height: 100%;
+background: #1a1a1a;
+border: 1px solid rgba(255,255,255,0.1);
+position: relative;
+overflow: hidden;
+display: grid;
+grid-template-columns: 1fr 1.2fr;
+border-radius: 4px; /* Slight roundness for modern feel */
+}
+.card-content {
+padding: 4rem;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+background: #1a1a1a;
+z-index: 2;
+}
+.card-img-wrap {
+position: relative;
+width: 100%;
+height: 100%;
+overflow: hidden;
+}
+.card-img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+filter: grayscale(100%); /* Monochrome feel */
+transition: transform 1.5s ease, filter 0.5s ease;
+}
+.card-inner:hover .card-img {
+transform: scale(1.05);
+filter: grayscale(0%);
+}
+@media (max-width: 768px) {
+.card-inner { grid-template-columns: 1fr; }
+.card-item { top: 5vh; height: 85vh; }
+.card-img-wrap { height: 40%; order: -1; }
+.card-content { padding: 2rem; height: 60%; }
+.loader-text { font-size: 8vw; }
+}
+/* --- FOOTER REVEAL --- */
+.footer-sticky {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+z-index: 1;
+background: #0f0f0f;
+color: #fff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+/* --- UTILS --- */
+.display { font-family: var(--font-display); }
+.tracking-tight-custom { letter-spacing: -0.04em; }
+/* --- NOISE --- */
+.noise-overlay {
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 9000;
+opacity: 0.04;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+}
+</style></head>
+<body class="antialiased selection:bg-gray-800 selection:text-white">
+
+    <!-- OVERLAYS -->
+    <div class="noise-overlay"></div>
+
+    <!-- PRELOADER -->
+    <div class="loader">
+        <div class="loader-text">MPA COLLECTIVE</div>
+        <div class="loader-bar"></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full px-6 py-6 md:px-12 flex justify-between items-center z-50 mix-blend-difference text-white">
+        <div class="display font-semibold text-xl tracking-tight-custom flex items-center gap-2">
+            <!-- Simple Abstract Logo Icon -->
+            <iconify-icon icon="solar:layers-minimalistic-linear" width="24" stroke-width="1.5"></iconify-icon>
+            MPA COLLECTIVE
+        </div>
+        <div class="hidden md:flex gap-8 text-xs font-medium uppercase tracking-widest text-gray-300">
+            <a href="#about" class="hover:text-white transition-colors">About</a>
+            <a href="#services" class="hover:text-white transition-colors">Services</a>
+            <a href="#quote" class="hover:text-white transition-colors">Quote</a>
+            <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+        <a href="#quote" class="hidden md:block border border-white/20 px-5 py-2 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors rounded-sm">
+            Get a free quote
+        </a>
+    </nav>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="wrapper">
+
+        <!-- HERO SECTION -->
+        <section class="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+            <!-- Darkened Concrete Image -->
+            <img src="images/firepit.jpg"
+                 class="absolute inset-0 w-full h-full object-cover opacity-50 hero-img"
+                 alt="Architectural concrete fire pit, Wānaka">
+
+            <div class="relative z-10 text-center text-white w-full px-4">
+                <div class="flex justify-center mb-6 overflow-hidden">
+                    <span class="hero-fade opacity-0 text-xs md:text-sm font-medium tracking-[0.3em] uppercase border border-white/20 px-4 py-1 rounded-full backdrop-blur-sm">
+                        Crafted in Wānaka &amp; Central Otago
+                    </span>
+                </div>
+
+                <h1 class="display text-[10vw] md:text-[8vw] leading-[0.9] font-medium tracking-tight-custom hero-text overflow-hidden text-white/90">
+                    <span class="block translate-y-full">RAW</span>
+                </h1>
+                <h1 class="display text-[10vw] md:text-[8vw] leading-[0.9] font-medium tracking-tight-custom hero-text overflow-hidden text-white/90">
+                    <span class="block translate-y-full">FORM</span>
+                </h1>
+
+                <p class="mt-8 text-sm md:text-base font-light text-gray-300 max-w-lg mx-auto hero-fade opacity-0 leading-relaxed">
+                    Bespoke architectural concrete for premium residential spaces. Unique, raw, and made to last.
+                </p>
+
+                <!-- Trust Badges -->
+                <div class="mt-10 flex flex-wrap justify-center gap-4 hero-fade opacity-0">
+                    <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-400 border border-white/10 px-3 py-1.5 rounded bg-black/20">
+                        <iconify-icon icon="solar:hammer-linear"></iconify-icon> 9 Years' Experience
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-400 border border-white/10 px-3 py-1.5 rounded bg-black/20">
+                        <iconify-icon icon="solar:verified-check-linear"></iconify-icon> Free Quotes
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-400 border border-white/10 px-3 py-1.5 rounded bg-black/20">
+                        <iconify-icon icon="solar:shield-check-linear"></iconify-icon> Built to Last
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 hero-fade opacity-0 animate-bounce">
+                <iconify-icon icon="solar:arrow-down-linear" width="24" class="text-white/50"></iconify-icon>
+            </div>
+        </section>
+
+        <!-- INTRO / ABOUT SECTION -->
+        <section id="about" class="py-32 px-6 md:px-20 grid md:grid-cols-2 gap-16 max-w-[1600px] mx-auto bg-[var(--c-bg)]">
+            <div class="sticky top-32 self-start">
+                <h2 class="display text-4xl md:text-5xl font-medium tracking-tight-custom leading-tight split-animate text-[#171717]">
+                    Crafted from <br>passion &amp; <span class="text-gray-400">grit.</span>
+                </h2>
+                <div class="mt-8 flex gap-4 text-xs font-medium uppercase tracking-widest text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="solar:users-group-two-rounded-linear" class="text-lg"></iconify-icon>
+                        Owner-Operated
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="solar:hammer-linear" class="text-lg"></iconify-icon>
+                        9 Years' Experience
+                    </div>
+                </div>
+            </div>
+            <div class="text-lg md:text-xl font-light leading-relaxed text-gray-600">
+                <p class="mb-8 split-animate">
+                    Architectural concrete, crafted in the Wānaka and Central Otago region. Much like our environment, our craft is unique, raw, and made to last.
+                </p>
+                <p class="mb-8 split-animate">
+                    With an extensive background in landscape construction, concreting, building and earthworks, we bring a strong understanding of design, detail and craftsmanship to every project. Each piece has its own character — premium residential spaces deserve premium features and finishes.
+                </p>
+
+                <div class="h-px w-full bg-black/10 my-10"></div>
+
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-sm font-medium uppercase tracking-widest text-black mb-2">Service Area</h4>
+                        <p class="text-sm text-gray-500">Wānaka &amp; Central Otago</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium uppercase tracking-widest text-black mb-2">Focus</h4>
+                        <p class="text-sm text-gray-500">Premium Residential</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES STACK -->
+        <section id="services" class="stack-section">
+            <div class="text-center mb-24 px-6">
+                <div class="text-xs uppercase tracking-[0.2em] mb-4 text-gray-500">Capabilities</div>
+                <h2 class="display text-4xl md:text-6xl font-medium tracking-tight-custom">WHAT WE MAKE</h2>
+            </div>
+
+            <div class="stack-container">
+
+                <!-- Service 1 -->
+                <div class="card-item">
+                    <div class="card-inner">
+                        <div class="card-content">
+                            <div>
+                                <div class="text-sm font-mono mb-6 text-gray-500 border border-white/20 inline-block px-2 py-1 rounded">01</div>
+                                <h3 class="text-2xl md:text-3xl font-medium display tracking-tight-custom">Fire Pits &amp; Fire Tables</h3>
+                                <p class="text-sm mt-2 text-gray-500 uppercase tracking-widest">Cast Concrete Features</p>
+                            </div>
+                            <div class="text-gray-400 font-light text-sm md:text-base leading-relaxed">
+                                Solid, sculptural fire pits cast to your dimensions — a warm anchor for cold Central Otago nights, and a feature that only looks better with age.
+                            </div>
+                            <div class="flex items-center gap-2 text-xs uppercase tracking-widest pt-4 border-t border-white/10">
+                                <iconify-icon icon="solar:fire-linear"></iconify-icon> Bespoke &amp; Hand-Finished
+                            </div>
+                        </div>
+                        <div class="card-img-wrap">
+                            <img src="images/firepit.jpg" class="card-img" alt="Concrete fire pit">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="card-item">
+                    <div class="card-inner">
+                        <div class="card-content">
+                            <div>
+                                <div class="text-sm font-mono mb-6 text-gray-500 border border-white/20 inline-block px-2 py-1 rounded">02</div>
+                                <h3 class="text-2xl md:text-3xl font-medium display tracking-tight-custom">Outdoor Kitchens &amp; Benchtops</h3>
+                                <p class="text-sm mt-2 text-gray-500 uppercase tracking-widest">Benchtops &amp; Bar Tops</p>
+                            </div>
+                            <div class="text-gray-400 font-light text-sm md:text-base leading-relaxed">
+                                Board-formed, hand-finished concrete benchtops and outdoor kitchen surfaces. Heat-tolerant, hard-wearing and unmistakably premium — built for real use and real weather.
+                            </div>
+                            <div class="flex items-center gap-2 text-xs uppercase tracking-widest pt-4 border-t border-white/10">
+                                <iconify-icon icon="solar:ruler-pen-linear"></iconify-icon> Board-Formed Finish
+                            </div>
+                        </div>
+                        <div class="card-img-wrap">
+                            <img src="images/kitchen-hero.jpg" class="card-img" alt="Concrete outdoor kitchen benchtop">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="card-item">
+                    <div class="card-inner">
+                        <div class="card-content">
+                            <div>
+                                <div class="text-sm font-mono mb-6 text-gray-500 border border-white/20 inline-block px-2 py-1 rounded">03</div>
+                                <h3 class="text-2xl md:text-3xl font-medium display tracking-tight-custom">Retaining Walls &amp; Features</h3>
+                                <p class="text-sm mt-2 text-gray-500 uppercase tracking-widest">Walls, Furniture &amp; More</p>
+                            </div>
+                            <div class="text-gray-400 font-light text-sm md:text-base leading-relaxed">
+                                Structural retaining walls, garden edging, bench seats, bespoke furniture, polished surfaces, stepping stones and custom letterboxes. If it can be formed, we'll build it.
+                            </div>
+                            <div class="flex items-center gap-2 text-xs uppercase tracking-widest pt-4 border-t border-white/10">
+                                <iconify-icon icon="solar:clipboard-check-linear"></iconify-icon> Custom Formwork
+                            </div>
+                        </div>
+                        <div class="card-img-wrap">
+                            <img src="images/retaining-wall.jpg" class="card-img" alt="Concrete retaining wall">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="py-32 bg-[#F5F5F5] text-center flex flex-col items-center justify-center relative z-10 border-b border-gray-200">
+            <h2 class="display text-3xl md:text-4xl font-medium tracking-tight-custom mb-6">Start Your Project</h2>
+            <div class="max-w-xl text-gray-600 font-light mb-10 leading-relaxed px-6">
+                Premium residential spaces deserve premium features and finishes. Tell us about your next project and we'll arrange a free, no-obligation quote.
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                 <div class="h-12 w-px bg-black/20"></div>
+                 <span class="text-xs uppercase tracking-widest text-gray-400">Request a quote below</span>
+            </div>
+        </section>
+
+        <!-- REQUEST A QUOTE (Guided) -->
+        <section id="quote" class="py-32 px-6 md:px-20 bg-[#111] text-[#F5F5F5] relative z-10">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-16">
+                    <div class="text-xs uppercase tracking-[0.2em] mb-4 text-gray-500">Free · No Obligation</div>
+                    <h2 class="display text-4xl md:text-6xl font-medium tracking-tight-custom mb-6">REQUEST A QUOTE</h2>
+                    <p class="text-gray-400 font-light max-w-xl mx-auto">Answer a few quick questions and we'll be in touch to arrange a site visit and a free quote.</p>
+                </div>
+
+                <form class="quote-form">
+                    <!-- Progress -->
+                    <div class="mb-12">
+                        <div class="flex justify-between text-xs uppercase tracking-widest mb-3 text-gray-500">
+                            <span class="q-indicator">Step 1 of 3</span>
+                            <span>MPA Collective</span>
+                        </div>
+                        <div class="h-px w-full bg-white/10">
+                            <div class="q-bar h-px bg-[#F5F5F5] transition-all duration-500" style="width:33%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 — What -->
+                    <div class="q-step">
+                        <label class="block display text-2xl font-medium tracking-tight-custom mb-8">What can we build for you?</label>
+                        <select name="project" required class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] focus:border-white outline-none text-lg appearance-none cursor-pointer">
+                            <option value="" class="text-black">Select a project type…</option>
+                            <option class="text-black">Fire pit / fire table</option>
+                            <option class="text-black">Outdoor kitchen / benchtop</option>
+                            <option class="text-black">Retaining wall / garden edging</option>
+                            <option class="text-black">Bench seat / outdoor seating</option>
+                            <option class="text-black">Bespoke concrete furniture</option>
+                            <option class="text-black">Polished / exposed aggregate surface</option>
+                            <option class="text-black">Stepping stones / pathway</option>
+                            <option class="text-black">Custom letterbox</option>
+                            <option class="text-black">Something else / not sure yet</option>
+                        </select>
+                    </div>
+
+                    <!-- Step 2 — Detail -->
+                    <div class="q-step hidden">
+                        <label class="block display text-2xl font-medium tracking-tight-custom mb-8">Tell us a little more.</label>
+                        <div class="grid md:grid-cols-2 gap-8 mb-10">
+                            <div>
+                                <span class="block text-xs uppercase tracking-widest mb-2 text-gray-500">Timeframe</span>
+                                <select name="timeframe" required class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] focus:border-white outline-none text-lg appearance-none cursor-pointer">
+                                    <option value="" class="text-black">Select…</option>
+                                    <option class="text-black">As soon as possible</option>
+                                    <option class="text-black">Within 1–3 months</option>
+                                    <option class="text-black">3–6 months</option>
+                                    <option class="text-black">Just exploring options</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span class="block text-xs uppercase tracking-widest mb-2 text-gray-500">Location</span>
+                                <select name="location" required class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] focus:border-white outline-none text-lg appearance-none cursor-pointer">
+                                    <option value="" class="text-black">Select…</option>
+                                    <option class="text-black">Wānaka</option>
+                                    <option class="text-black">Lake Hāwea</option>
+                                    <option class="text-black">Cromwell</option>
+                                    <option class="text-black">Queenstown</option>
+                                    <option class="text-black">Other — Central Otago</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="block text-xs uppercase tracking-widest mb-2 text-gray-500">Project details</span>
+                        <textarea name="details" rows="4" class="w-full bg-transparent border-b border-white/20 py-3 text-[#F5F5F5] placeholder-gray-500 focus:border-white outline-none text-lg resize-none" placeholder="Size, finish ideas, anything that helps us picture it…"></textarea>
+                    </div>
+
+                    <!-- Step 3 — Contact -->
+                    <div class="q-step hidden">
+                        <label class="block display text-2xl font-medium tracking-tight-custom mb-8">Where can we send your quote?</label>
+                        <div class="grid gap-8">
+                            <input name="name" required placeholder="Your name" class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] placeholder-gray-500 focus:border-white outline-none text-lg">
+                            <input name="phone" type="tel" required placeholder="Phone number" class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] placeholder-gray-500 focus:border-white outline-none text-lg">
+                            <input name="email" type="email" required placeholder="Email address" class="w-full bg-transparent border-b border-white/20 py-4 text-[#F5F5F5] placeholder-gray-500 focus:border-white outline-none text-lg">
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex justify-between items-center mt-14 gap-6">
+                        <button type="button" class="q-back hidden uppercase tracking-widest text-xs border border-white/30 px-6 py-3 rounded-sm hover:bg-white hover:text-black transition-colors">← Back</button>
+                        <span class="flex-1"></span>
+                        <button type="button" class="q-next uppercase tracking-widest text-xs bg-[#F5F5F5] text-black px-8 py-4 rounded-sm hover:bg-white transition-colors">Next →</button>
+                        <button type="submit" class="q-submit hidden uppercase tracking-widest text-xs bg-[#F5F5F5] text-black px-8 py-4 rounded-sm hover:bg-white transition-colors">Send Request</button>
+                    </div>
+                    <p class="q-done hidden text-center mt-8 text-sm text-gray-400">Thanks — your email app will open with the details ready to send to MPA Collective.</p>
+                </form>
+            </div>
+        </section>
+
+    </div>
+    <!-- END WRAPPER -->
+
+    <!-- FOOTER (FIXED BEHIND) -->
+    <footer id="contact" class="footer-sticky bg-[#0f0f0f]">
+        <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-12 h-full flex flex-col justify-center">
+
+            <div class="grid md:grid-cols-2 gap-12 md:gap-24 mb-16 items-start">
+
+                <!-- Left: Contact Info -->
+                <div class="space-y-12">
+                     <div>
+                        <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-6">Get in Touch</h4>
+                        <a href="tel:0211234567" class="block display text-4xl md:text-5xl font-medium tracking-tight-custom hover:text-gray-300 transition-colors mb-2">
+                            021 123 4567
+                        </a>
+                        <p class="text-gray-400 font-light">Free, no-obligation quotes — with Jordan Smith.</p>
+                     </div>
+
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3 text-white">
+                                <iconify-icon icon="solar:map-point-linear"></iconify-icon>
+                                <span class="font-medium text-sm uppercase tracking-wide">Service Area</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed font-light">
+                                Wānaka, Central Otago<br>&amp; the Southern Lakes
+                            </p>
+                        </div>
+                        <div>
+                             <div class="flex items-center gap-2 mb-3 text-white">
+                                <iconify-icon icon="solar:letter-linear"></iconify-icon>
+                                <span class="font-medium text-sm uppercase tracking-wide">Email</span>
+                            </div>
+                            <a href="mailto:hello@mpacollective.co.nz" class="text-sm text-gray-400 leading-relaxed font-light hover:text-white transition-colors">
+                                hello@mpacollective.co.nz
+                            </a>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Right: Socials & Brand -->
+                <div class="md:text-right flex flex-col justify-between h-full">
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-6">Socials</h4>
+                        <div class="flex md:justify-end gap-6">
+                            <a href="https://www.instagram.com/jordysmith__" target="_blank" rel="noopener" class="p-3 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                                <iconify-icon icon="solar:instagram-linear" width="20"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 space-y-4">
+                        <div class="text-xs text-gray-500 uppercase tracking-widest">
+                            <span class="block mb-1">MPA COLLECTIVE</span>
+                            <span class="block text-[10px] text-gray-600">Architectural Concrete · Wānaka NZ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
+                <div>© 2026 MPA Collective</div>
+                <div class="mt-2 md:mt-0">Raw · Unique · Made to Last</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- SETUP ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- LENIS SCROLL ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // --- TEXT SPLITTER UTILITY ---
+        function splitTextToWords(element) {
+            const text = element.innerText;
+            const words = text.split(' ');
+            element.innerHTML = '';
+            words.forEach(word => {
+                const wordWrap = document.createElement('span');
+                wordWrap.classList.add('word-wrap');
+                wordWrap.innerHTML = `<span class="word-inner">${word}&nbsp;</span>`;
+                element.appendChild(wordWrap);
+            });
+        }
+
+        // Apply split to all elements with class .split-animate
+        document.querySelectorAll('.split-animate').forEach(el => {
+            splitTextToWords(el);
+        });
+
+        // --- LOADER ---
+        const loadTl = gsap.timeline({
+            onComplete: () => {
+                document.body.style.opacity = 1;
+                initSite();
+            }
+        });
+
+        loadTl.to('.loader-bar', { width: '100%', duration: 1.2, ease: 'power2.inOut' })
+              .to('.loader-text', { y: -50, opacity: 0, duration: 0.5 })
+              .to('.loader', { yPercent: -100, duration: 0.8, ease: 'power4.inOut' });
+
+        function initSite() {
+            // Hero Animations
+            gsap.to('.hero-text span', {
+                y: 0,
+                stagger: 0.1,
+                duration: 1.5,
+                ease: 'power4.out'
+            });
+            gsap.to('.hero-fade', { opacity: 1, y: 0, stagger: 0.1, duration: 1, delay: 0.5 });
+
+            // Hero Parallax
+            gsap.to('.hero-img', {
+                yPercent: 30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.hero-img',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            // --- TEXT REVEAL ON SCROLL ---
+            const splitElements = document.querySelectorAll('.split-animate');
+            splitElements.forEach(el => {
+                const words = el.querySelectorAll('.word-inner');
+                gsap.to(words, {
+                    y: "0%",
+                    duration: 0.8,
+                    ease: "power3.out",
+                    stagger: 0.015,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+
+            // --- CARD STACK ANIMATION ---
+            const cards = gsap.utils.toArray('.card-item');
+
+            cards.forEach((card, i) => {
+                const nextCard = cards[i+1];
+                if (nextCard) {
+                    gsap.to(card.querySelector('.card-inner'), {
+                        scale: 0.95,
+                        opacity: 0.5,
+                        filter: 'blur(5px)',
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: nextCard,
+                            start: "top bottom",
+                            end: "top 10vh",
+                            scrub: true
+                        }
+                    });
+                }
+            });
+
+            // Footer Reveal Effect
+            gsap.from('.footer-sticky > div', {
+                y: 50,
+                opacity: 0,
+                scale: 0.95,
+                scrollTrigger: {
+                    trigger: '.footer-sticky',
+                    start: 'top 90%',
+                    end: 'bottom bottom',
+                    scrub: true
+                }
+            });
+        }
+
+        // --- QUOTE WIZARD ---
+        document.querySelectorAll('.quote-form').forEach(form => {
+            const steps = Array.from(form.querySelectorAll('.q-step'));
+            const bar = form.querySelector('.q-bar');
+            const indicator = form.querySelector('.q-indicator');
+            const backBtn = form.querySelector('.q-back');
+            const nextBtn = form.querySelector('.q-next');
+            const submitBtn = form.querySelector('.q-submit');
+            let i = 0;
+            function render() {
+                steps.forEach((s, idx) => s.classList.toggle('hidden', idx !== i));
+                if (bar) bar.style.width = ((i + 1) / steps.length * 100) + '%';
+                if (indicator) indicator.textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+                backBtn.classList.toggle('hidden', i === 0);
+                nextBtn.classList.toggle('hidden', i === steps.length - 1);
+                submitBtn.classList.toggle('hidden', i !== steps.length - 1);
+            }
+            function stepValid() {
+                return Array.from(steps[i].querySelectorAll('[required]')).every(el => {
+                    const ok = el.value.trim() !== '';
+                    el.style.borderColor = ok ? '' : '#c0392b';
+                    return ok;
+                });
+            }
+            nextBtn.addEventListener('click', () => { if (stepValid() && i < steps.length - 1) { i++; render(); } });
+            backBtn.addEventListener('click', () => { if (i > 0) { i--; render(); } });
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                if (!stepValid()) return;
+                const d = new FormData(form);
+                const subject = 'Quote request — ' + (d.get('project') || 'MPA Collective');
+                const body =
+                    'PROJECT TYPE: ' + (d.get('project') || '') + '\n' +
+                    'TIMEFRAME: ' + (d.get('timeframe') || '') + '\n' +
+                    'LOCATION: ' + (d.get('location') || '') + '\n\n' +
+                    'DETAILS:\n' + (d.get('details') || '') + '\n\n' +
+                    '------------------------\n' +
+                    'NAME: ' + (d.get('name') || '') + '\n' +
+                    'PHONE: ' + (d.get('phone') || '') + '\n' +
+                    'EMAIL: ' + (d.get('email') || '');
+                window.location.href = 'mailto:hello@mpacollective.co.nz?subject=' +
+                    encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                const done = form.querySelector('.q-done');
+                if (done) done.classList.remove('hidden');
+            });
+            render();
+        });
+    </script>
+</body>
+</html>
